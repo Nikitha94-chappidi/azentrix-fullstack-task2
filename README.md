@@ -1,6 +1,10 @@
 # Azentrix Task Collaboration System (Mini Trello)
 
-A lightweight, self-hostable, multi-user task management and collaboration tool. Perfect for small remote teams looking for a simple, fast, and secure tool without bloating overhead or subscription fees.
+## Live Demo
+
+**Live Application:** https://azentrix-trello-board.onrender.com/
+
+A full-stack task management and collaboration platform inspired by Trello, designed to enhance team productivity through streamlined workflow management. The application features secure JWT-based authentication, role-based access control, interactive drag-and-drop Kanban boards, and near real-time task synchronization, delivering a seamless, responsive, and collaborative user experience.
 
 ## Features
 
