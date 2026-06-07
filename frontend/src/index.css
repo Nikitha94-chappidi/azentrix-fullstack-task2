@@ -1,0 +1,871 @@
+/* Modern Collaboration Design System - Azentrix Trello Board */
+
+:root {
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', var(--font-sans);
+
+  /* Semantic Priorities */
+  --priority-low: hsl(210, 80%, 45%);
+  --priority-low-bg: hsla(210, 80%, 45%, 0.12);
+  --priority-medium: hsl(42, 90%, 50%);
+  --priority-medium-bg: hsla(42, 90%, 50%, 0.12);
+  --priority-high: hsl(351, 89%, 60%);
+  --priority-high-bg: hsla(351, 89%, 60%, 0.12);
+
+  /* Shared Gradients */
+  --color-primary-grad: linear-gradient(135deg, hsl(252, 90%, 65%), hsl(280, 85%, 55%));
+  --color-primary-glow: hsla(252, 90%, 65%, 0.35);
+
+  /* Light Theme variables */
+  --color-bg-base: hsl(220, 25%, 97%);
+  --color-bg-panel: hsla(0, 0%, 100%, 0.7);
+  --color-bg-card: hsla(0, 0%, 100%, 0.85);
+  --color-bg-input: hsl(0, 0%, 100%);
+  --color-border: hsla(220, 15%, 85%, 0.6);
+  --color-border-active: hsl(252, 90%, 65%);
+  --color-text-primary: hsl(224, 40%, 12%);
+  --color-text-secondary: hsl(220, 15%, 45%);
+  --color-text-muted: hsl(220, 10%, 65%);
+  --shadow-sm: 0 2px 8px -2px hsla(224, 40%, 12%, 0.05);
+  --shadow-md: 0 10px 25px -5px hsla(224, 40%, 12%, 0.06), 0 8px 16px -6px hsla(224, 40%, 12%, 0.04);
+  --shadow-lg: 0 20px 40px -10px hsla(224, 40%, 12%, 0.08);
+  --blur-glass: 16px;
+  --color-glow: rgba(99, 102, 241, 0.04);
+}
+
+[data-theme='dark'] {
+  /* Dark Theme variables */
+  --color-bg-base: hsl(222, 47%, 6%);
+  --color-bg-panel: hsla(223, 47%, 10%, 0.65);
+  --color-bg-card: hsla(223, 47%, 12%, 0.8);
+  --color-bg-input: hsl(223, 47%, 9%);
+  --color-border: hsla(223, 30%, 20%, 0.55);
+  --color-border-active: hsl(252, 90%, 72%);
+  --color-text-primary: hsl(210, 40%, 96%);
+  --color-text-secondary: hsl(215, 20%, 72%);
+  --color-text-muted: hsl(215, 12%, 50%);
+  --shadow-sm: 0 2px 8px -2px hsla(0, 0%, 0%, 0.3);
+  --shadow-md: 0 10px 25px -5px hsla(0, 0%, 0%, 0.4), 0 8px 16px -6px hsla(0, 0%, 0%, 0.2);
+  --shadow-lg: 0 20px 40px -10px hsla(0, 0%, 0%, 0.5);
+  --color-glow: rgba(99, 102, 241, 0.14);
+}
+
+/* Global Reset & Core Styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  background-image: 
+    radial-gradient(circle at 10% 20%, var(--color-glow) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, var(--color-glow) 0%, transparent 40%);
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Main Container Layout */
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header & Tab Rules */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  transition: all 0.4s ease;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  background: var(--color-primary-grad);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px var(--color-primary-glow);
+}
+
+.logo-text {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: var(--color-primary-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-badge-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.user-role-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.user-role-tag.admin {
+  background: hsla(280, 85%, 55%, 0.15);
+  color: hsl(280, 85%, 55%);
+  border: 1px solid hsla(280, 85%, 55%, 0.3);
+}
+
+.user-role-tag.member {
+  background: hsla(220, 15%, 45%, 0.15);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+/* Authentication Page Styles (Register / Login cards) */
+.auth-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.auth-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.auth-switch-link {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-top: 1.5rem;
+}
+
+.auth-switch-link span {
+  color: hsl(252, 90%, 65%);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-switch-link span:hover {
+  text-decoration: underline;
+}
+
+/* Trello Board Grid System */
+.board-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  min-height: 70vh;
+}
+
+.board-column {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 60vh;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.board-column.drag-over {
+  background: hsla(252, 90%, 65%, 0.05);
+  border-color: var(--color-border-active);
+  box-shadow: 0 0 12px hsla(252, 90%, 65%, 0.1);
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.column-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.column-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.column-card-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: hsla(220, 12%, 50%, 0.12);
+  color: var(--color-text-secondary);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.column-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 65vh;
+  padding: 0.2rem;
+}
+
+/* Draggable Task Card Styling */
+.task-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-left-width: 4px;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-card.dragging {
+  opacity: 0.35;
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-text-muted);
+}
+
+/* Priority color tags left-borders */
+.task-card.priority-low {
+  border-left-color: var(--priority-low);
+}
+
+.task-card.priority-medium {
+  border-left-color: var(--priority-medium);
+}
+
+.task-card.priority-high {
+  border-left-color: var(--priority-high);
+}
+
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.task-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+.task-card-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  align-items: center;
+  color: var(--color-text-muted);
+}
+
+.task-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: hsla(220, 12%, 50%, 0.05);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.task-priority-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.task-priority-tag.low {
+  background: var(--priority-low-bg);
+  color: var(--priority-low);
+}
+
+.task-priority-tag.medium {
+  background: var(--priority-medium-bg);
+  color: var(--priority-medium);
+}
+
+.task-priority-tag.high {
+  background: var(--priority-high-bg);
+  color: var(--priority-high);
+}
+
+.task-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.assignee-avatar-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-primary-grad);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.assignee-empty-text {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* User Management (Admin Dashboard Panel) */
+.admin-panel-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  animation: slideUp 0.3s ease;
+}
+
+.admin-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.users-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.users-list-table th {
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.users-list-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.users-list-table tr:hover td {
+  background: hsla(220, 12%, 50%, 0.02);
+}
+
+/* Button UI Definitions */
+.btn-primary {
+  border: none;
+  background: var(--color-primary-grad);
+  color: white;
+  padding: 0.7rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px var(--color-primary-glow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--color-primary-glow);
+  filter: brightness(1.05);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  padding: 0.7rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: hsla(220, 12%, 50%, 0.05);
+  color: var(--color-text-primary);
+  border-color: var(--color-text-secondary);
+}
+
+.btn-danger {
+  border: none;
+  background: var(--priority-high-bg);
+  color: var(--priority-high);
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-danger:hover {
+  background: var(--priority-high);
+  color: white;
+}
+
+.btn-link {
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.btn-link:hover {
+  color: var(--color-text-primary);
+}
+
+/* Drag and Drop Visual Columns Hints placeholder */
+.column-empty-card-placeholder {
+  border: 2px dashed var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* Responsive Columns (Tablet / Mobile) */
+@media (max-width: 1024px) {
+  .board-container {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .board-column {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+
+  .app-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+    padding: 1rem;
+  }
+
+  .header-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .user-badge-info {
+    justify-content: center;
+  }
+
+  .admin-panel-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  /* Table styling stack for mobile admin view */
+  .users-list-table, .users-list-table thead, .users-list-table tbody, .users-list-table th, .users-list-table td, .users-list-table tr {
+    display: block;
+  }
+
+  .users-list-table thead {
+    display: none;
+  }
+
+  .users-list-table tr {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    background: var(--color-bg-card);
+    padding: 0.5rem;
+  }
+
+  .users-list-table td {
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    padding-left: 45%;
+    text-align: right;
+    font-size: 0.9rem;
+  }
+
+  .users-list-table td:last-child {
+    border-bottom: none;
+  }
+
+  .users-list-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    width: 40%;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+}
+
+/* ==========================================================================
+   Custom Task Modal & Form Styles (Added for App.jsx Dialogs)
+   ========================================================================== */
+
+/* Dark/Light Theme Switcher Styles */
+.theme-toggle-btn {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: hsla(220, 12%, 50%, 0.08);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-active);
+  transform: translateY(-1px);
+}
+
+/* Modal Dialog Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+/* Modal Dialog Content Card */
+.modal-content {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 520px;
+  padding: 2.25rem;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 850;
+  background: var(--color-primary-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: hsla(220, 12%, 50%, 0.15);
+  color: var(--color-text-primary);
+}
+
+/* Modal Input & Textarea Elements */
+.form-input, .form-select, .form-textarea {
+  background: var(--color-bg-input);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  color: var(--color-text-primary);
+  width: 100%;
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='hsl(220, 15%, 45%)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.1em;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--color-border-active);
+  box-shadow: 0 0 0 3px hsla(252, 90%, 65%, 0.15);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1.25rem;
+}
+
+/* Modal Keyframes Animations */
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 500px) {
+  .form-input-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .modal-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+}
+
+/* ==========================================================================
+   Kanban Action Buttons Styling (Plus, Edit, Delete)
+   ========================================================================== */
+.action-btn {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: hsla(220, 12%, 50%, 0.1);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-active);
+  transform: scale(1.05);
+}
+
+.action-btn.edit {
+  color: hsl(252, 90%, 65%);
+}
+
+.action-btn.edit:hover {
+  background: var(--priority-low-bg);
+  border-color: hsl(252, 90%, 65%);
+}
+
+.action-btn.delete {
+  color: var(--priority-high);
+}
+
+.action-btn.delete:hover {
+  background: var(--priority-high-bg);
+  border-color: var(--priority-high);
+}
