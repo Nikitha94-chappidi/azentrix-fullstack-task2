@@ -17,7 +17,7 @@ import AdminPanel from './components/AdminPanel';
 // Automatically detect host to communicate with Express server
 const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000'
-  : '';
+  : 'https://azentrix-trello-backend.onrender.com';
 
 export default function App() {
   // Authentication State
